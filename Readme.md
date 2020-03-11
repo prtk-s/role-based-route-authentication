@@ -18,7 +18,7 @@ The sample below and others are included in the `example` directory.
 
 To use role-based-route-authentication we need to define two things.
 
-#### First we need a role based permission JSON as below format:
+##### First we need a role based permission JSON as below format:
 
 ```javascript
 roleBasedPermissionJSON = {
@@ -46,7 +46,7 @@ roleBasedPermissionJSON = {
 'ADMIN': ['GET_users_details'],
 }
 ```
-#### Second thing we need is the `key` by using whic we can get role from node `request` object.
+##### Second thing we need is the `key` by using which we can get role from node `request` object.
 
 For E.g
 ```javascript
