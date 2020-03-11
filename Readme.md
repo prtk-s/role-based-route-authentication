@@ -9,7 +9,7 @@ By using role-based-route-authentication we can authenticate route on based of r
 
 role-based-route-authentication may be installed via npm with: 
 
-npm install role-based-route-authentication
+	npm install role-based-route-authentication
   
 
 ## Usage
