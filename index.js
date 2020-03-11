@@ -9,7 +9,8 @@ var _require = require('./util'),
     isPermissionsExist = _require.isPermissionsExist,
     isRouteExist = _require.isRouteExist,
     getRole = _require.getRole,
-    RoleBasedError = _require.RoleBasedError;
+    RoleBasedError = _require.RoleBasedError,
+    UndefinedRoleError = _require.UndefinedRoleError;
 
 function setPermissionsWithRole(permissionJSON, roleKey) {
     function roleBasedAuthenticator(permissionJSON, roleKey, request, response, next) {
@@ -23,10 +24,11 @@ function setPermissionsWithRole(permissionJSON, roleKey) {
                 return next();
             }
 
-            var role = getRole(request, roleKey);
+            var isRoleKey = roleKey ? roleKey : 'users';
+            var role = getRole(request, isRoleKey);
 
             if (!role) {
-                throw new RoleBasedError();
+                throw new UndefinedRoleError();
             }
 
             var rolePermissions = permissionJSON[role];
@@ -51,12 +53,13 @@ function setPermissionsWithRole(permissionJSON, roleKey) {
                 path = path.substr(0, paramValueIndex - 1);
             }
             routeToVerify = routeToVerify + '_' + path;
+
             if (!isRouteExist(rolePermissions, routeToVerify)) {
                 throw new RoleBasedError();
             }
-            next();
+            return next();
         } catch (error) {
-            response.status(404).json(error);
+            return response.status(404).json(error);
         }
     }
     return roleBasedAuthenticator.bind(this, permissionJSON, roleKey);

@@ -24,9 +24,17 @@ function getRole(request, roleKey) {
     if (keyArray.length > 1) {
         for (var key = 1; key < keyArray.length; key++) {
             roleName = roleName[keyArray[key]];
+            if (!roleName) {
+                break;
+            }
         }
     }
-    return roleName;
+    if (!roleName) {
+        return false;
+    } else if (!roleName['role']) {
+        return false;
+    }
+    return roleName['role'];
 }
 
 var RoleBasedError = function (_Error) {
@@ -45,7 +53,24 @@ var RoleBasedError = function (_Error) {
     return RoleBasedError;
 }(Error);
 
+var UndefinedRoleError = function (_Error2) {
+    _inherits(UndefinedRoleError, _Error2);
+
+    function UndefinedRoleError(message) {
+        _classCallCheck(this, UndefinedRoleError);
+
+        var _this2 = _possibleConstructorReturn(this, (UndefinedRoleError.__proto__ || Object.getPrototypeOf(UndefinedRoleError)).call(this));
+
+        _this2.message = message || 'Got undefined role for provided roleKey';
+        _this2.name = 'InsufficientAuthorization';
+        return _this2;
+    }
+
+    return UndefinedRoleError;
+}(Error);
+
 exports.isPermissionsExist = isPermissionsExist;
 exports.isRouteExist = isRouteExist;
 exports.getRole = getRole;
 exports.RoleBasedError = RoleBasedError;
+exports.UndefinedRoleError = UndefinedRoleError;
